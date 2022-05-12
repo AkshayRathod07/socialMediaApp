@@ -5,9 +5,8 @@ exports.connectDatabase = () => {
     .connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false
       
+
     } )
     .then((con) => console.log(`Database Connected: ${con.connection.host}`))
     .catch((err) => console.log(err));
