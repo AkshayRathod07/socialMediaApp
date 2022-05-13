@@ -81,7 +81,7 @@ const Account = () => {
       </div>
       <div className="accountright">
         <Avatar
-          src={user.avatar.url}
+          src={user?.avatar?.url}
           sx={{ height: "8vmax", width: "8vmax" }}
         />
 

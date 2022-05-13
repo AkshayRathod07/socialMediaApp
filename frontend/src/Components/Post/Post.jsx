@@ -96,7 +96,7 @@ const Post = ({
         ) : null}
       </div>
 
-      <img src="https://i.picsum.photos/id/322/200/200.jpg?hmac=h5_-NQtnn86YBEwVT2_4zcSeuxpCnMAdriBcZchtfas" alt="Post" />
+      <img src={postImage} alt="Post" />
       {/* <img src="https://i.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U" alt="Post"  /> */}
 
 

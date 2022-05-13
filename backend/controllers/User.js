@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Post = require("../models/Post");
 const { sendEmail } = require("../middlewares/sendEmail");
 const crypto = require('crypto');
+const cloudinary = require("cloudinary");
 
 
 exports.register = async (req, res) => {
@@ -15,15 +16,16 @@ exports.register = async (req, res) => {
           .json({ success: false, message: "User already exists" });
       }
   
-    //   const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-    //     folder: "avatars",
-    //   });
+      const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+        folder: "avatars",
+      });
   
       user = await User.create({
         name,
         email,
         password,
-        avatar: { public_id: 'myCloud.public_id', url: 'myCloud.secure_url' },
+        avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
+
       });
   
       const token = await user.generateToken();
@@ -53,7 +55,7 @@ exports.register = async (req, res) => {
   
       const user = await User.findOne({ email })
         .select("+password")
-        // .populate("posts followers following");
+        .populate("posts followers following");
   
       if (!user) {
         return res.status(400).json({
@@ -204,15 +206,15 @@ exports.register = async (req, res) => {
         user.email = email;
       }
   
-      // if (avatar) {
-      //   await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+      if (avatar) {
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id);
   
-      //   const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-      //     folder: "avatars",
-      //   });
-      //   user.avatar.public_id = myCloud.public_id;
-      //   user.avatar.url = myCloud.secure_url;
-      // }
+        const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+          folder: "avatars",
+        });
+        user.avatar.public_id = myCloud.public_id;
+        user.avatar.url = myCloud.secure_url;
+      }
   
       await user.save();
   
@@ -237,7 +239,7 @@ exports.register = async (req, res) => {
       const userId = user._id;
   
       // Removing Avatar from cloudinary
-      // await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+      await cloudinary.v2.uploader.destroy(user.avatar.public_id);
   
       await user.remove();
   
@@ -251,7 +253,7 @@ exports.register = async (req, res) => {
       // Delete all posts of the user
       for (let i = 0; i < posts.length; i++) {
         const post = await Post.findById(posts[i]);
-        // await cloudinary.v2.uploader.destroy(post.image.public_id);
+        await cloudinary.v2.uploader.destroy(post.image.public_id);
         await post.remove();
       }
   
@@ -345,6 +347,57 @@ exports.register = async (req, res) => {
       res.status(200).json({
         success: true,
         user,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+
+  exports.getMyPosts = async (req, res) => {
+    try {
+      const user = await User.findById(req.user._id);
+  
+      const posts = [];
+  
+      for (let i = 0; i < user.posts.length; i++) {
+        const post = await Post.findById(user.posts[i]).populate(
+          "likes comments.user owner"
+        );
+        posts.push(post);
+      }
+  
+      res.status(200).json({
+        success: true,
+        posts,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  };
+
+
+  exports.getUserPosts = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+  
+      const posts = [];
+  
+      for (let i = 0; i < user.posts.length; i++) {
+        const post = await Post.findById(user.posts[i]).populate(
+          "likes comments.user owner"
+        );
+        posts.push(post);
+      }
+  
+      res.status(200).json({
+        success: true,
+        posts,
       });
     } catch (error) {
       res.status(500).json({

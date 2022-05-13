@@ -1,5 +1,5 @@
 const express = require("express");
-const { register, login, followUser, logout, updatePassword, updateProfile, deleteMyProfile, myProfile, getUserProfile, getAllUsers, forgotPassword, resetPassword } = require("../controllers/User");
+const { register, login, followUser, logout, updatePassword, updateProfile, deleteMyProfile, myProfile, getUserProfile, getAllUsers, forgotPassword, resetPassword, getMyPosts, getUserPosts } = require("../controllers/User");
 const { isAuthenticated } = require("../middlewares/auth");
 
 const router = express.Router();
@@ -26,6 +26,10 @@ router.route("/users").get(isAuthenticated, getAllUsers);
 router.route("/forgot/password").post(forgotPassword);
 
 router.route("/password/reset/:token").put(resetPassword);
+
+router.route("/my/posts").get(isAuthenticated, getMyPosts);
+
+router.route("/userposts/:id").get(isAuthenticated, getUserPosts);
 
 
 
