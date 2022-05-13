@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
 
 
 if (process.env.NODE_ENV !== "production") {
@@ -11,6 +12,7 @@ if (process.env.NODE_ENV !== "production") {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 
 //   // Importing Routes
