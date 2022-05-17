@@ -35,8 +35,8 @@ const Login = () => {
   return (
     <div className="login">
       <form className="loginForm" onSubmit={loginHandler}>
-        <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Social Aap
+        <Typography variant="h4" style={{ padding: "2vmax" }}>
+          Login in Zapya  ⚡
         </Typography>
 
         <input

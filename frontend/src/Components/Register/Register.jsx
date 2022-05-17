@@ -43,8 +43,8 @@ const Register = () => {
   return (
     <div className="register">
       <form className="registerForm" onSubmit={submitHandler}>
-        <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Social Aap
+        <Typography variant="h4" style={{ padding: "2vmax" }}>
+          Register in Zapya  ⚡
         </Typography>
 
         <Avatar

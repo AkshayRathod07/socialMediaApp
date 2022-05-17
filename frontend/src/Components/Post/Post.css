@@ -20,6 +20,8 @@
 
 .post > img {
   width: 100%;
+  object-fit: contain;
+  height: 400px;
 }
 
 .postDetails {
@@ -82,4 +84,5 @@
   .postFooter > button > svg {
     font-size: 8vw;
   }
+  
 }

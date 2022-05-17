@@ -23,7 +23,8 @@
 
 .newPostForm > img {
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  height: 270px;
 }
 .newPostForm > h3 {
   margin: 2vmax;
@@ -42,6 +43,8 @@
   border-radius: 30px;
   margin: 2vmax;
 }
+
+
 
 .newPostForm > input[type="file"]::-webkit-file-upload-button {
   background-color: rgb(38, 63, 173);
